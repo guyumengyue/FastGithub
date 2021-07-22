@@ -1,4 +1,4 @@
-﻿using FastGithub.Dns.DnscryptProxy;
+﻿using FastGithub.DnscryptProxy;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FastGithub

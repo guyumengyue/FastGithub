@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FastGithub.Dns.DnscryptProxy
+namespace FastGithub.DnscryptProxy
 {
     /// <summary>
     /// DnscryptProxy服务
