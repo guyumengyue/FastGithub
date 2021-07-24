@@ -43,14 +43,19 @@ namespace FastGithub.Dns
                     return false;
                 }
 
-                var table = Marshal.PtrToStructure<MIB_UDPTABLE_OWNER_PID>(new IntPtr(pUdpTable));
-                foreach (var row in table.rows)
+                var prt = new IntPtr(pUdpTable);
+                var table = Marshal.PtrToStructure<MIB_UDPTABLE_OWNER_PID>(prt);
+                prt += sizeof(int);
+                for (var i = 0; i < table.dwNumEntries; i++)
                 {
+                    var row = Marshal.PtrToStructure<MIB_UDPROW_OWNER_PID>(prt);
                     if (row.LocalPort == port)
                     {
                         processId = row.ProcessId;
                         return true;
                     }
+
+                    prt += Marshal.SizeOf<MIB_UDPROW_OWNER_PID>();
                 }
             }
 
@@ -69,9 +74,6 @@ namespace FastGithub.Dns
         private struct MIB_UDPTABLE_OWNER_PID
         {
             public uint dwNumEntries;
-
-            [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.Struct, SizeConst = 1)]
-            public MIB_UDPROW_OWNER_PID[] rows;
         }
 
         [StructLayout(LayoutKind.Sequential)]
