@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace FastGithub.PacketIntercept
 {
@@ -8,9 +9,10 @@ namespace FastGithub.PacketIntercept
     interface ITcpInterceptor
     {
         /// <summary>
-        /// 拦截tcp
+        /// 拦截数据包
         /// </summary>
         /// <param name="cancellationToken"></param>
-        void Intercept(CancellationToken cancellationToken);
+        /// <returns></returns>
+        Task InterceptAsync(CancellationToken cancellationToken);
     }
 }
