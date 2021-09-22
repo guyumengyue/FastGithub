@@ -14,15 +14,15 @@ namespace FastGithub.Dns
     [SupportedOSPlatform("windows")]
     sealed class HttpsInterceptor
     {
-        private readonly ILogger<DnsInterceptor> logger;
+        private readonly ILogger<HttpsInterceptor> logger;
         private readonly ushort https443Port = BinaryPrimitives.ReverseEndianness((ushort)443);
-        private readonly ushort httpReverseProxyPort = BinaryPrimitives.ReverseEndianness((ushort)HttpsReverseProxyPort.Value);
+        private readonly ushort httpsReverseProxyPort = BinaryPrimitives.ReverseEndianness((ushort)ReverseProxyPort.Https);
 
         /// <summary>
         /// https拦截器
         /// </summary>
         /// <param name="logger"></param>
-        public HttpsInterceptor(ILogger<DnsInterceptor> logger)
+        public HttpsInterceptor(ILogger<HttpsInterceptor> logger)
         {
             this.logger = logger;
         }
@@ -33,12 +33,12 @@ namespace FastGithub.Dns
         /// <param name="cancellationToken"></param>
         public void Intercept(CancellationToken cancellationToken)
         {
-            if (HttpsReverseProxyPort.Value == 443)
+            if (ReverseProxyPort.Https == 443)
             {
                 return;
             }
 
-            var filter = $"loopback and (tcp.DstPort == 443 or tcp.SrcPort == {HttpsReverseProxyPort.Value})";
+            var filter = $"loopback and (tcp.DstPort == 443 or tcp.SrcPort == {ReverseProxyPort.Https})";
             var handle = WinDivert.WinDivertOpen(filter, WinDivertLayer.Network, 0, WinDivertOpenFlags.None);
             if (handle == IntPtr.Zero)
             {
@@ -82,7 +82,7 @@ namespace FastGithub.Dns
             var packet = WinDivert.WinDivertHelperParsePacket(winDivertBuffer, packetLength);
             if (packet.TcpHeader->DstPort == https443Port)
             {
-                packet.TcpHeader->DstPort = this.httpReverseProxyPort;
+                packet.TcpHeader->DstPort = this.httpsReverseProxyPort;
             }
             else
             {

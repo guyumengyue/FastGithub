@@ -1,5 +1,4 @@
-﻿using FastGithub.Configuration;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using System.Runtime.Versioning;
 using System.Threading;
 using System.Threading.Tasks;
