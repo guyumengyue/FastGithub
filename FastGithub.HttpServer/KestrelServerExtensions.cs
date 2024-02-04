@@ -33,7 +33,7 @@ namespace FastGithub
         }
 
         /// <summary>
-        /// 监听http代理
+        /// 监听http代理(Linux)
         /// </summary>
         /// <param name="kestrel"></param>
         public static void ListenHttpProxy(this KestrelServerOptions kestrel)
@@ -56,7 +56,7 @@ namespace FastGithub
                 listen.Use(next => context => tunnelMiddleware.InvokeAsync(next, context));
             });
 
-            kestrel.GetLogger().LogInformation($"已监听http://localhost:{httpProxyPort}，http代理服务启动完成");
+            kestrel.GetLogger().LogInformation($"已监听 http://localhost:{httpProxyPort}，http代理服务启动完成");
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace FastGithub
                 listen.UseConnectionHandler<GithubSshReverseProxyHandler>();
             });
 
-            kestrel.GetLogger().LogInformation($"已监听ssh://localhost:{sshPort}，github的ssh反向代理服务启动完成");
+            kestrel.GetLogger().LogInformation($"已监听 ssh://localhost:{sshPort}，github的ssh反向代理服务启动完成");
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace FastGithub
                 listen.UseConnectionHandler<GithubGitReverseProxyHandler>();
             });
 
-            kestrel.GetLogger().LogInformation($"已监听git://localhost:{gitPort}，github的git反向代理服务启动完成");
+            kestrel.GetLogger().LogInformation($"已监听 git://localhost:{gitPort}，github的git反向代理服务启动完成");
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace FastGithub
 
             if (OperatingSystem.IsWindows())
             {
-                kestrel.GetLogger().LogInformation($"已监听http://localhost:{httpPort}，http反向代理服务启动完成");
+                kestrel.GetLogger().LogInformation($"已监听 http://localhost:{httpPort}，http反向代理服务启动完成");
             }
         }
 
@@ -126,7 +126,7 @@ namespace FastGithub
             if (OperatingSystem.IsWindows())
             {
                 var logger = kestrel.GetLogger();
-                logger.LogInformation($"已监听https://localhost:{httpsPort}，https反向代理服务启动完成");
+                logger.LogInformation($" 已监听 https://localhost:{httpsPort}，https反向代理服务启动完成");
             }
         }
 
