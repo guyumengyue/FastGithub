@@ -1,7 +1,22 @@
 # FastGithub
 github加速神器，解决github打不开、用户头像无法加载、releases无法上传下载、git-clone、git-pull、git-push失败等问题。
 
-* 原仓库 https://github.com/dotnetcore/fastgithub 已经没有了，所以拿了最新版本改了自用。
+### 项目来源与本仓库改动
+
+本项目基于 [creazyboyone/FastGithub](https://github.com/creazyboyone/FastGithub)，本地取得的上游基线提交为 `f5425ec6750463f64f6b01d15d8010e0b53f94c4`。README 中提到的 [dotnetcore/FastGithub](https://github.com/dotnetcore/fastgithub) 是更早的项目来源；本次代码直接来自 creazyboyone 的仓库。项目保留原仓库的 MIT 许可证和版权声明。
+
+GitHub 上的 [guyumengyue/FastGithub](https://github.com/guyumengyue/FastGithub) 是独立仓库，不是 GitHub Fork。为避免把上游历史中的 CA 私钥带入本仓库，发布前重写了本仓库的 Git 历史并移除了该私钥；因此提交 SHA 与上游不同。原作者仓库及其他已有克隆不受这次清理影响。
+
+本仓库在上游代码基础上进行了以下修改：
+
+- 修复版本字符串解析边界，改善 Docker 示例重复克隆、证书文件名和失败重试行为。
+- 增加 Windows 显式代理模式，作为透明拦截与 localhost 服务冲突时的绕行方案；透明模式的回环冲突仍待彻底修复。
+- 调整 Windows/macOS 构建和发布流程，增加 Apple Silicon ARM64 支持。
+- 修复代理连接失败时的资源释放、自定义端口 Host 保留和上游 TLS 证书校验问题；移除启动时修改 Git 全局证书校验设置的行为。
+- 完善 Windows 桌面界面，加入状态与流量概览、启停控制、日志筛选导出、连接设置和本地帮助。
+- 增加回归测试、界面预览脚本及项目原理、Issue 对应关系和验证范围说明。
+
+修改详情、相关 Issue 和仍未解决的问题见[项目分析与修复说明](docs/项目分析与修复说明.md)。
 
 ### 1 写在前面
 * **fastgithub不具备“翻墙”功能,也没有相关的计划**
@@ -10,7 +25,7 @@ github加速神器，解决github打不开、用户头像无法加载、releases
 * **fastgithub没有主动在github之外的任何渠道发布**
   
 ### 2 部署方式
-源码克隆后不会包含 `FastGithub.UI.exe`。直接使用请到 [Releases](https://github.com/creazyboyone/FastGithub/releases) 下载对应平台的完整压缩包，不要下载 Source code；自行构建见下方“源码构建”。
+源码克隆后不会包含 `FastGithub.UI.exe`。本仓库目前没有发布二进制包；上游 [Releases](https://github.com/creazyboyone/FastGithub/releases) 中的压缩包属于原作者版本，不包含本仓库的修改。使用本仓库版本请自行构建，见下方“源码构建”。
 
 #### 2.1 windows-x64桌面
 * 双击运行FastGithub.UI.exe 
