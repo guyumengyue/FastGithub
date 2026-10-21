@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T15:50:46.183743+00:00",
+  "title": "Design System: FastGithub",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Accent",
+        "canonical": "#245FC4",
+        "tonalRamp": [
+          "oklch(0.15 0.1696 260.5)",
+          "oklch(0.26 0.1696 260.5)",
+          "oklch(0.38 0.1696 260.5)",
+          "oklch(0.49 0.1696 260.5)",
+          "oklch(0.61 0.1696 260.5)",
+          "oklch(0.72 0.1696 260.5)",
+          "oklch(0.84 0.1696 260.5)",
+          "oklch(0.95 0.1696 260.5)"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Accent Soft",
+        "canonical": "#E1EBFC",
+        "tonalRamp": [
+          "oklch(0.15 0.0254 261.1)",
+          "oklch(0.26 0.0254 261.1)",
+          "oklch(0.38 0.0254 261.1)",
+          "oklch(0.49 0.0254 261.1)",
+          "oklch(0.61 0.0254 261.1)",
+          "oklch(0.72 0.0254 261.1)",
+          "oklch(0.84 0.0254 261.1)",
+          "oklch(0.95 0.0254 261.1)"
+        ]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Accent Hover",
+        "canonical": "#174DA8",
+        "tonalRamp": [
+          "oklch(0.15 0.1570 260.4)",
+          "oklch(0.26 0.1570 260.4)",
+          "oklch(0.38 0.1570 260.4)",
+          "oklch(0.49 0.1570 260.4)",
+          "oklch(0.61 0.1570 260.4)",
+          "oklch(0.72 0.1570 260.4)",
+          "oklch(0.84 0.1570 260.4)",
+          "oklch(0.95 0.1570 260.4)"
+        ]
+      },
+      "accent-pressed": {
+        "role": "primary",
+        "displayName": "Accent Pressed",
+        "canonical": "#123C84",
+        "tonalRamp": [
+          "oklch(0.15 0.1298 260.6)",
+          "oklch(0.26 0.1298 260.6)",
+          "oklch(0.38 0.1298 260.6)",
+          "oklch(0.49 0.1298 260.6)",
+          "oklch(0.61 0.1298 260.6)",
+          "oklch(0.72 0.1298 260.6)",
+          "oklch(0.84 0.1298 260.6)",
+          "oklch(0.95 0.1298 260.6)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "canonical": "#F4F6FA",
+        "tonalRamp": [
+          "oklch(0.15 0.0057 264.5)",
+          "oklch(0.26 0.0057 264.5)",
+          "oklch(0.38 0.0057 264.5)",
+          "oklch(0.49 0.0057 264.5)",
+          "oklch(0.61 0.0057 264.5)",
+          "oklch(0.72 0.0057 264.5)",
+          "oklch(0.84 0.0057 264.5)",
+          "oklch(0.95 0.0057 264.5)"
+        ]
+      },
+      "panel": {
+        "role": "neutral",
+        "displayName": "Panel",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "oklch(0.15 0.0000 0.0)",
+          "oklch(0.26 0.0000 0.0)",
+          "oklch(0.38 0.0000 0.0)",
+          "oklch(0.49 0.0000 0.0)",
+          "oklch(0.61 0.0000 0.0)",
+          "oklch(0.72 0.0000 0.0)",
+          "oklch(0.84 0.0000 0.0)",
+          "oklch(0.95 0.0000 0.0)"
+        ]
+      },
+      "rail": {
+        "role": "neutral",
+        "displayName": "Rail",
+        "canonical": "#EDF1F7",
+        "tonalRamp": [
+          "oklch(0.15 0.0091 258.3)",
+          "oklch(0.26 0.0091 258.3)",
+          "oklch(0.38 0.0091 258.3)",
+          "oklch(0.49 0.0091 258.3)",
+          "oklch(0.61 0.0091 258.3)",
+          "oklch(0.72 0.0091 258.3)",
+          "oklch(0.84 0.0091 258.3)",
+          "oklch(0.95 0.0091 258.3)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#202B3D",
+        "tonalRamp": [
+          "oklch(0.15 0.0366 260.0)",
+          "oklch(0.26 0.0366 260.0)",
+          "oklch(0.38 0.0366 260.0)",
+          "oklch(0.49 0.0366 260.0)",
+          "oklch(0.61 0.0366 260.0)",
+          "oklch(0.72 0.0366 260.0)",
+          "oklch(0.84 0.0366 260.0)",
+          "oklch(0.95 0.0366 260.0)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#5D6B80",
+        "tonalRamp": [
+          "oklch(0.15 0.0374 258.4)",
+          "oklch(0.26 0.0374 258.4)",
+          "oklch(0.38 0.0374 258.4)",
+          "oklch(0.49 0.0374 258.4)",
+          "oklch(0.61 0.0374 258.4)",
+          "oklch(0.72 0.0374 258.4)",
+          "oklch(0.84 0.0374 258.4)",
+          "oklch(0.95 0.0374 258.4)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "#DCE2EB",
+        "tonalRamp": [
+          "oklch(0.15 0.0139 258.3)",
+          "oklch(0.26 0.0139 258.3)",
+          "oklch(0.38 0.0139 258.3)",
+          "oklch(0.49 0.0139 258.3)",
+          "oklch(0.61 0.0139 258.3)",
+          "oklch(0.72 0.0139 258.3)",
+          "oklch(0.84 0.0139 258.3)",
+          "oklch(0.95 0.0139 258.3)"
+        ]
+      },
+      "secondary-pressed": {
+        "role": "neutral",
+        "displayName": "Secondary Pressed",
+        "canonical": "#D3E1F7",
+        "tonalRamp": [
+          "oklch(0.15 0.0337 259.4)",
+          "oklch(0.26 0.0337 259.4)",
+          "oklch(0.38 0.0337 259.4)",
+          "oklch(0.49 0.0337 259.4)",
+          "oklch(0.61 0.0337 259.4)",
+          "oklch(0.72 0.0337 259.4)",
+          "oklch(0.84 0.0337 259.4)",
+          "oklch(0.95 0.0337 259.4)"
+        ]
+      },
+      "navigation-hover": {
+        "role": "neutral",
+        "displayName": "Navigation Hover",
+        "canonical": "#E3E9F2",
+        "tonalRamp": [
+          "oklch(0.15 0.0138 258.3)",
+          "oklch(0.26 0.0138 258.3)",
+          "oklch(0.38 0.0138 258.3)",
+          "oklch(0.49 0.0138 258.3)",
+          "oklch(0.61 0.0138 258.3)",
+          "oklch(0.72 0.0138 258.3)",
+          "oklch(0.84 0.0138 258.3)",
+          "oklch(0.95 0.0138 258.3)"
+        ]
+      },
+      "state-ready": {
+        "role": "semantic",
+        "displayName": "State Ready",
+        "canonical": "#24734A",
+        "tonalRamp": [
+          "oklch(0.15 0.1010 156.6)",
+          "oklch(0.26 0.1010 156.6)",
+          "oklch(0.38 0.1010 156.6)",
+          "oklch(0.49 0.1010 156.6)",
+          "oklch(0.61 0.1010 156.6)",
+          "oklch(0.72 0.1010 156.6)",
+          "oklch(0.84 0.1010 156.6)",
+          "oklch(0.95 0.1010 156.6)"
+        ]
+      },
+      "state-pending": {
+        "role": "semantic",
+        "displayName": "State Pending",
+        "canonical": "#8A6500",
+        "tonalRamp": [
+          "oklch(0.15 0.1090 83.3)",
+          "oklch(0.26 0.1090 83.3)",
+          "oklch(0.38 0.1090 83.3)",
+          "oklch(0.49 0.1090 83.3)",
+          "oklch(0.61 0.1090 83.3)",
+          "oklch(0.72 0.1090 83.3)",
+          "oklch(0.84 0.1090 83.3)",
+          "oklch(0.95 0.1090 83.3)"
+        ]
+      },
+      "state-error": {
+        "role": "semantic",
+        "displayName": "State Error",
+        "canonical": "#B43D35",
+        "tonalRamp": [
+          "oklch(0.15 0.1559 27.5)",
+          "oklch(0.26 0.1559 27.5)",
+          "oklch(0.38 0.1559 27.5)",
+          "oklch(0.49 0.1559 27.5)",
+          "oklch(0.61 0.1559 27.5)",
+          "oklch(0.72 0.1559 27.5)",
+          "oklch(0.84 0.1559 27.5)",
+          "oklch(0.95 0.1559 27.5)"
+        ]
+      },
+      "state-stopped": {
+        "role": "semantic",
+        "displayName": "State Stopped",
+        "canonical": "#79869A",
+        "tonalRamp": [
+          "oklch(0.15 0.0340 258.9)",
+          "oklch(0.26 0.0340 258.9)",
+          "oklch(0.38 0.0340 258.9)",
+          "oklch(0.49 0.0340 258.9)",
+          "oklch(0.61 0.0340 258.9)",
+          "oklch(0.72 0.0340 258.9)",
+          "oklch(0.84 0.0340 258.9)",
+          "oklch(0.95 0.0340 258.9)"
+        ]
+      },
+      "chart-upload": {
+        "role": "neutral",
+        "displayName": "Chart Upload",
+        "canonical": "#7C8BA4",
+        "tonalRamp": [
+          "oklch(0.15 0.0416 260.6)",
+          "oklch(0.26 0.0416 260.6)",
+          "oklch(0.38 0.0416 260.6)",
+          "oklch(0.49 0.0416 260.6)",
+          "oklch(0.61 0.0416 260.6)",
+          "oklch(0.72 0.0416 260.6)",
+          "oklch(0.84 0.0416 260.6)",
+          "oklch(0.95 0.0416 260.6)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "service-state": {
+        "displayName": "Service State",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "secondary": {
+        "displayName": "Secondary",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "rate": {
+        "displayName": "Rate",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      },
+      "timestamp": {
+        "displayName": "Timestamp",
+        "purpose": "Observed native WPF text role; portable px values correspond numerically to DIP."
+      }
+    },
+    "shadows": [],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary service action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Documentation-only visual equivalent of the WPF primary button. Native implementation: Theme.xaml.",
+      "html": "<button class=\"ds-primary\">启动服务</button>",
+      "css": ".ds-primary{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;background:#245FC4;color:white;padding:10px 22px;border:0;border-radius:6px;font-weight:600}.ds-primary:hover{background:#174DA8}.ds-primary:active{background:#123C84}.ds-primary:focus-visible{outline:2px dashed #245FC4;outline-offset:3px;}.ds-primary:disabled{opacity:.5}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Visual equivalent only; WPF retains the production interaction template.",
+      "html": "<button class=\"ds-secondary\">复制地址</button>",
+      "css": ".ds-secondary{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;background:#fff;color:#202B3D;border:1px solid #DCE2EB;border-radius:6px;padding:8px 14px}.ds-secondary:hover{background:#E1EBFC;color:#245FC4}.ds-secondary:active{background:#D3E1F7}.ds-secondary:focus-visible{outline:2px dashed #245FC4;outline-offset:3px;}.ds-secondary:disabled{opacity:.45}"
+    },
+    {
+      "name": "Log search",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Visual equivalent of the native WPF search text field, not a web implementation.",
+      "html": "<input class=\"ds-search\" aria-label=\"搜索日志\" placeholder=\"搜索消息或来源\">",
+      "css": ".ds-search{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;background:white;color:#202B3D;border:1px solid #DCE2EB;padding:8px 10px}.ds-search:focus-visible{outline:2px dashed #245FC4;outline-offset:3px;}.ds-search:hover{border-color:#245FC4}"
+    },
+    {
+      "name": "Selected navigation",
+      "kind": "nav",
+      "refersTo": "navigation-selected",
+      "description": "Visual equivalent only. The application uses native grouped RadioButtons with explicit automation names.",
+      "html": "<button class=\"ds-nav\" aria-current=\"page\">概览</button>",
+      "css": ".ds-nav{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;font-size:14px;font-weight:600;background:#E1EBFC;color:#245FC4;border:0;border-radius:6px;padding:13px 16px}.ds-nav:hover{background:#E3E9F2}.ds-nav:focus-visible{outline:2px dashed #245FC4;outline-offset:3px;}"
+    },
+    {
+      "name": "Connection mode badge",
+      "kind": "chip",
+      "refersTo": "mode-badge",
+      "description": "Informational WPF mode label; no action or hover affordance.",
+      "html": "<span class=\"ds-mode\">透明模式</span>",
+      "css": ".ds-mode{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;font-size:11px;background:#E1EBFC;color:#245FC4;border-radius:4px;padding:3px 8px;display:inline-block}"
+    },
+    {
+      "name": "Content panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Visual equivalent of the flat native Border container. No shadow or hover elevation.",
+      "html": "<section class=\"ds-panel\">实时流量</section>",
+      "css": ".ds-panel{font-family:Segoe UI,Microsoft YaHei UI,sans-serif;font-size:13px;color:#202B3D;background:#fff;border-radius:12px;padding:22px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Local Service Console",
+    "overview": "FastGithub is a native Windows WPF application on .NET Framework 4.5. Its interface adopts the familiar organization of a desktop proxy client: persistent navigation, a prominent service control, and focused work areas for traffic, diagnostics, connection settings, and help. The existing light gray-blue identity is expressed through quiet surfaces and a restrained blue accent.\n\nThe visual priority is operational clarity. The service state and next action remain visible across pages; metadata and troubleshooting text sit below the main task. Text, color, and control availability communicate the actual local service lifecycle. The name above describes the implemented interface, rather than a separate brand identity exercise.",
+    "keyCharacteristics": [
+      "Native Windows window chrome and desktop controls.",
+      "A fixed navigation rail beside a flexible content area.",
+      "White panels on a cool, pale canvas with minimal visual depth.",
+      "Blue actions, clear Chinese labels, and monospaced measurements.",
+      "Explicit empty, pending, stopped, ready, and error states."
+    ],
+    "rules": [
+      {
+        "name": "The State Has Words Rule",
+        "body": "Pair every service-state color with its visible state label and explanation. Local readiness must not be presented as proof of GitHub reachability.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "Use the existing surface, spacing, and border hierarchy for depth; preserve the flat visual character of these native panels.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** preserve native Windows chrome, text rendering, and standard input behavior.",
+      "**Do** keep service state, its explanation, and the start/stop action visible across pages.",
+      "**Do** use the existing blue accent and cool surfaces from `Theme.xaml`.",
+      "**Do** distinguish unavailable measurements, empty collections, and filtered-out results with explanatory text.",
+      "**Do** check new content at the minimum window size and retain vertical scrolling where implemented.",
+      "**Do** preserve visible keyboard focus and readable text labels alongside icons and colors."
+    ],
+    "donts": [
+      "**Don't** equate local service readiness with remote GitHub reachability.",
+      "**Don't** fill empty charts or logs with invented live data.",
+      "**Don't** turn the desktop navigation into a web or mobile shell.",
+      "**Don't** add custom shadows or animated hover effects to the existing flat theme.",
+      "**Don't** describe the interface-open startup preference as Windows sign-in startup.",
+      "**Don't** treat the sidecar's HTML/CSS previews as implementation templates for WPF."
+    ]
+  }
+}

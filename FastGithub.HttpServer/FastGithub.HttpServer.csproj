@@ -5,6 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>FastGithub.Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Yarp.ReverseProxy" Version="1.1.1" />
 	</ItemGroup>

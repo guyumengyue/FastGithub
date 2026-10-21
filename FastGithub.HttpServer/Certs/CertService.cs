@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -92,33 +91,6 @@ namespace FastGithub.HttpServer.Certs
             else
             {
                 this.logger.LogWarning($"请根据你的系统平台手动安装和信任CA证书{this.CaCerFilePath}");
-            }
-
-            GitConfigSslverify(false);
-        }
-
-        /// <summary>
-        /// 设置ssl验证
-        /// </summary>
-        /// <param name="value">是否验证</param>
-        /// <returns></returns>
-        public static bool GitConfigSslverify(bool value)
-        {
-            try
-            {
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = "git",
-                    Arguments = $"config --global http.sslverify {value.ToString().ToLower()}",
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                });
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
             }
         }
 

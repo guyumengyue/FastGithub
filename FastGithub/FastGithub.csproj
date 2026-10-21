@@ -34,6 +34,9 @@
 		<None Include="../LICENSE" Link="LICENSE">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Include="../docs/*.md" Link="docs/%(Filename)%(Extension)">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,6 +50,12 @@
 
 	<ItemGroup>
 		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>FastGithub.Tests</_Parameter1>
+		</AssemblyAttribute>
 	</ItemGroup>
 
 </Project>

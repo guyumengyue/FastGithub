@@ -28,15 +28,17 @@
 
         public static string ToNetworkSizeString(long value)
         {
+            value = System.Math.Max(0, value);
             if (value < 1024)
             {
-                return $"{value}B";
+                return $"{value} B";
             }
             if (value < 1024 * 1024)
             {
-                return $"{value / 1024d:0.00}KB";
+                return $"{value / 1024d:0.0} KB";
             }
-            return $"{value / 1024d / 1024d:0.00}MB";
+            if (value < 1024L * 1024 * 1024) return $"{value / 1024d / 1024d:0.0} MB";
+            return $"{value / 1024d / 1024d / 1024d:0.0} GB";
         }
     }
 }

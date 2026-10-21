@@ -13,6 +13,9 @@ on:
         type: boolean  
         default: false  
   
+permissions:
+  contents: write
+
 jobs:  
   build-and-release:  
     runs-on: ubuntu-latest  
@@ -56,7 +59,6 @@ jobs:
     runs-on: ${{ matrix.os }}  
     strategy:  
       matrix:  
-        os: [ubuntu-latest, windows-latest, macos-latest]  
         include:  
           - os: ubuntu-latest  
             runtime: linux-x64  
@@ -67,6 +69,9 @@ jobs:
           - os: macos-latest  
             runtime: osx-x64  
             artifact-name: fastgithub-osx-x64  
+          - os: macos-latest
+            runtime: osx-arm64
+            artifact-name: fastgithub-osx-arm64
   
     steps:  
     - name: Checkout code  
@@ -80,7 +85,7 @@ jobs:
         dotnet-version: '7.0.x'  
   
     - name: Restore dependencies  
-      run: dotnet restore FastGithub.sln
+      run: dotnet restore FastGithub/FastGithub.csproj -r ${{ matrix.runtime }}
   
     - name: Build and publish
       shell: bash
@@ -91,7 +96,6 @@ jobs:
           -r ${{ matrix.runtime }} \
           --self-contained true \
           -p:PublishSingleFile=true \
-          -p:PublishTrimmed=true \
           -o ./publish/${{ matrix.runtime }}
   
         # 发布 UI (仅 Windows)
@@ -99,6 +103,8 @@ jobs:
           dotnet publish FastGithub.UI/FastGithub.UI.csproj \
             -c Release \
             -o ./publish/${{ matrix.runtime }}
+        else
+          chmod +x ./publish/${{ matrix.runtime }}/fastgithub ./publish/${{ matrix.runtime }}/dnscrypt-proxy/dnscrypt-proxy
         fi
 
     - name: Create archive  
@@ -153,10 +159,11 @@ jobs:
         ### 📦 下载说明  
         - **Windows 用户**: 下载 `fastgithub-win-x64.zip`  
         - **Linux 用户**: 下载 `fastgithub-linux-x64.tar.gz`  
-        - **macOS 用户**: 下载 `fastgithub-osx-x64.tar.gz`  
+        - **macOS Intel 用户**: 下载 `fastgithub-osx-x64.tar.gz`
+        - **macOS Apple Silicon 用户**: 下载 `fastgithub-osx-arm64.tar.gz`
           
         ### 🔧 安装说明  
-        请参考 [README.md](https://github.com/${{ github.repository }}/blob/main/README.md) 中的部署方式。  
+        请参考 [README.md](https://github.com/${{ github.repository }}/blob/${{ github.event.inputs.version }}/README.md) 中的部署方式。
           
         ### ⚠️ 注意事项  
         - Windows版本包含UI界面程序  

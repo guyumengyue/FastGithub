@@ -1,112 +1,83 @@
-﻿using LiveCharts;
+using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
-using Newtonsoft.Json;
 using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace FastGithub.UI
 {
-    /// <summary>
-    /// FlowChart.xaml 的交互逻辑
-    /// </summary>
     public partial class FlowChart : UserControl
     {
         private readonly LineSeries readSeries = new LineSeries
         {
-            Title = "上行速率",
-            PointGeometry = null,
-            LineSmoothness = 1D,
+            Title = "上行速率", PointGeometry = null, LineSmoothness = 0,
+            Stroke = new SolidColorBrush(Color.FromRgb(124, 139, 164)), Fill = Brushes.Transparent,
+            StrokeThickness = 2, StrokeDashArray = new DoubleCollection { 4, 3 },
             Values = new ChartValues<RateTick>()
         };
-
-        private readonly LineSeries writeSeries = new LineSeries()
+        private readonly LineSeries writeSeries = new LineSeries
         {
-            Title = "下行速率",
-            PointGeometry = null,
-            LineSmoothness = 1D,
+            Title = "下行速率", PointGeometry = null, LineSmoothness = 0,
+            Stroke = new SolidColorBrush(Color.FromRgb(36, 95, 196)),
+            Fill = new SolidColorBrush(Color.FromArgb(18, 36, 95, 196)), StrokeThickness = 2,
             Values = new ChartValues<RateTick>()
         };
-
-        private static DateTime GetDateTime(double timestamp) => new DateTime(1970, 1, 1).Add(TimeSpan.FromMilliseconds(timestamp)).ToLocalTime();
-
-        private static double GetTimestamp(DateTime dateTime) => dateTime.ToUniversalTime().Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
-
-
         public SeriesCollection Series { get; } = new SeriesCollection(Mappers.Xy<RateTick>().X(item => item.Timestamp).Y(item => item.Rate));
-
-        public Func<double, string> XFormatter { get; } = timestamp => GetDateTime(timestamp).ToString("HH:mm:ss");
-
-        public Func<double, string> YFormatter { get; } = value => $"{FlowStatistics.ToNetworkSizeString((long)value)}/s";
+        public Func<double, string> XFormatter { get; } = timestamp => new DateTime(1970, 1, 1).AddMilliseconds(timestamp).ToLocalTime().ToString("HH:mm:ss");
+        public Func<double, string> YFormatter { get; } = value => FlowStatistics.ToNetworkSizeString((long)value) + "/s";
 
         public FlowChart()
         {
             InitializeComponent();
-
-            this.Series.Add(this.readSeries);
-            this.Series.Add(this.writeSeries);
-
-            this.DataContext = this;
-            this.InitFlowChartAsync();
+            Series.Add(writeSeries);
+            Series.Add(readSeries);
+            DataContext = this;
         }
 
-        private async void InitFlowChartAsync()
+        public void Update(FlowStatistics statistics)
         {
-            using var httpClient = new HttpClient();
-            while (this.Dispatcher.HasShutdownStarted == false)
+            EmptyState.Visibility = Visibility.Collapsed;
+            flowChart.Visibility = Visibility.Visible;
+            ReadRate.Text = FlowStatistics.ToNetworkSizeString((long)statistics.ReadRate) + "/s";
+            WriteRate.Text = FlowStatistics.ToNetworkSizeString((long)statistics.WriteRate) + "/s";
+            textBlockRead.Text = "累计发送 " + FlowStatistics.ToNetworkSizeString(statistics.TotalRead);
+            textBlockWrite.Text = "累计接收 " + FlowStatistics.ToNetworkSizeString(statistics.TotalWrite);
+            var timestamp = (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            readSeries.Values.Add(new RateTick(statistics.ReadRate, timestamp));
+            writeSeries.Values.Add(new RateTick(statistics.WriteRate, timestamp));
+            while (readSeries.Values.Count > 60)
             {
-                try
-                {
-                    await this.FlushFlowStatisticsAsync(httpClient);
-                }
-                catch (Exception)
-                {
-                }
-                finally
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(1d));
-                }
+                readSeries.Values.RemoveAt(0);
+                writeSeries.Values.RemoveAt(0);
             }
+            UpdateTime.Text = "更新于 " + DateTime.Now.ToString("HH:mm:ss");
         }
 
-        private async Task FlushFlowStatisticsAsync(HttpClient httpClient)
+        public void SetUnavailable()
         {
-            var response = await httpClient.GetAsync("http://localhost/flowStatistics");
-            var json = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-            var flowStatistics = JsonConvert.DeserializeObject<FlowStatistics>(json);
-            if (flowStatistics == null)
-            {
-                return;
-            }
-
-            this.textBlockRead.Text = FlowStatistics.ToNetworkSizeString(flowStatistics.TotalRead);
-            this.textBlockWrite.Text = FlowStatistics.ToNetworkSizeString(flowStatistics.TotalWrite);
-
-            var timestamp = GetTimestamp(DateTime.Now);
-            this.readSeries.Values.Add(new RateTick(flowStatistics.ReadRate, timestamp));
-            this.writeSeries.Values.Add(new RateTick(flowStatistics.WriteRate, timestamp));
-
-            if (this.readSeries.Values.Count > 60)
-            {
-                this.readSeries.Values.RemoveAt(0);
-                this.writeSeries.Values.RemoveAt(0);
-            }
+            ReadRate.Text = "—";
+            WriteRate.Text = "—";
+            UpdateTime.Text = readSeries.Values.Count == 0 ? "最近 60 秒" : "上次运行的数据";
         }
 
-        private class RateTick
+        public void Reset()
+        {
+            readSeries.Values.Clear();
+            writeSeries.Values.Clear();
+            textBlockRead.Text = "累计发送 —";
+            textBlockWrite.Text = "累计接收 —";
+            EmptyState.Visibility = Visibility.Visible;
+            flowChart.Visibility = Visibility.Collapsed;
+            SetUnavailable();
+        }
+
+        private sealed class RateTick
         {
             public double Rate { get; }
-
             public double Timestamp { get; }
-
-            public RateTick(double rate, double timestamp)
-            {
-                this.Rate = rate;
-                this.Timestamp = timestamp;
-            }
+            public RateTick(double rate, double timestamp) { Rate = rate; Timestamp = timestamp; }
         }
-
     }
 }

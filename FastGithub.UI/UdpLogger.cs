@@ -64,19 +64,17 @@ namespace FastGithub.UI
 
             var json = Encoding.UTF8.GetString(buffer, 0, length);
             var log = JsonConvert.DeserializeObject<UdpLog>(json);
-            if (log != null)
-            {
-                log.Message = log.Message.Replace("\"", null);
-            }
             return log;
         }
 
         private static void EndReceiveFrom(IAsyncResult ar)
         {
             EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-            var length = socket.EndReceiveFrom(ar, ref remoteEP);
             var taskCompletionSource = (TaskCompletionSource<int>)ar.AsyncState;
-            taskCompletionSource.TrySetResult(length);
+            try { taskCompletionSource.TrySetResult(socket.EndReceiveFrom(ar, ref remoteEP)); }
+            catch (Exception ex) { taskCompletionSource.TrySetException(ex); }
         }
+
+        public static void Close() => socket.Dispose();
     }
 }

@@ -17,18 +17,18 @@ namespace FastGithub
     /// </summary>
     sealed class AppHostedService : BackgroundService
     {
-        private readonly IHost host;
+        private readonly IHostApplicationLifetime lifetime;
         private readonly IOptions<AppOptions> appOptions;
         private readonly IOptions<FastGithubOptions> fastGithubOptions;
         private readonly ILogger<AppHostedService> logger;
 
         public AppHostedService(
-            IHost host,
+            IHostApplicationLifetime lifetime,
             IOptions<AppOptions> appOptions,
             IOptions<FastGithubOptions> fastGithubOptions,
             ILogger<AppHostedService> logger)
         {
-            this.host = host;
+            this.lifetime = lifetime;
             this.appOptions = appOptions;
             this.fastGithubOptions = fastGithubOptions;
             this.logger = logger;
@@ -62,8 +62,9 @@ namespace FastGithub
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             await Task.Delay(TimeSpan.FromSeconds(1d), stoppingToken);
+            var uiExit = this.WaitForUiExitAsync(stoppingToken);
             await this.CheckFastGithubProxyAsync(stoppingToken);
-            await this.WaitForParentProcessExitAsync(stoppingToken);
+            await uiExit;
         }
 
 
@@ -74,7 +75,7 @@ namespace FastGithub
         /// <returns></returns>
         private async Task CheckFastGithubProxyAsync(CancellationToken cancellationToken)
         {
-            if (OperatingSystem.IsWindows() == false)
+            if (OperatingSystem.IsWindows() == false || this.fastGithubOptions.Value.EnablePacketIntercept == false)
             {
                 try
                 {
@@ -146,7 +147,7 @@ namespace FastGithub
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        private async Task WaitForParentProcessExitAsync(CancellationToken cancellationToken)
+        private async Task WaitForUiExitAsync(CancellationToken cancellationToken)
         {
             var parentId = this.appOptions.Value.ParentProcessId;
             if (parentId <= 0)
@@ -156,17 +157,44 @@ namespace FastGithub
 
             try
             {
-                Process.GetProcessById(parentId).WaitForExit();
+                using var parent = Process.GetProcessById(parentId);
+                using var linked = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                var parentExited = parent.WaitForExitAsync(linked.Token);
+                var name = this.appOptions.Value.ShutdownEventName;
+                if (OperatingSystem.IsWindows() && !string.IsNullOrEmpty(name))
+                {
+                    var signal = WaitForShutdownSignalAsync(name, linked.Token);
+                    var completed = await Task.WhenAny(parentExited, signal);
+                    await completed;
+                }
+                else await parentExited;
+                linked.Cancel();
             }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, $"获取进程{parentId}异常");
             }
             finally
             {
-                this.logger.LogInformation($"正在主动关闭，因为父进程已退出");
-                await this.host.StopAsync(cancellationToken);
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    this.logger.LogInformation("界面请求停止或父进程已退出，正在正常关闭服务");
+                    this.lifetime.StopApplication();
+                }
             }
+        }
+
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+        private static async Task WaitForShutdownSignalAsync(string name, CancellationToken cancellationToken)
+        {
+            using var signal = EventWaitHandle.OpenExisting(name);
+            var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using var cancellation = cancellationToken.Register(() => completion.TrySetCanceled(cancellationToken));
+            var registered = ThreadPool.RegisterWaitForSingleObject(signal,
+                (_, _) => completion.TrySetResult(true), null, Timeout.Infinite, executeOnlyOnce: true);
+            try { await completion.Task; }
+            finally { registered.Unregister(null); }
         }
 
     }

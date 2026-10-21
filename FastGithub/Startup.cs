@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
+using System.Runtime.Versioning;
 using System.Text.Json;
 
 namespace FastGithub
@@ -53,7 +54,9 @@ namespace FastGithub
             builder.WebHost.UseKestrel(kestrel =>
             {
                 kestrel.NoLimit();
-                if (OperatingSystem.IsWindows())
+                var uiPort = builder.Configuration.GetValue<int>(nameof(AppOptions.UiPort));
+                if (uiPort > 0) kestrel.ListenLocalhost(uiPort);
+                if (UsePacketIntercept(builder))
                 {
                     kestrel.ListenHttpsReverseProxy();
                     kestrel.ListenHttpReverseProxy();
@@ -106,10 +109,17 @@ namespace FastGithub
             services.AddFlowAnalyze();
             services.AddHostedService<AppHostedService>();
 
-            if (OperatingSystem.IsWindows())
+            if (UsePacketIntercept(builder))
             {
                 services.AddPacketIntercept();
             }
+        }
+
+        [SupportedOSPlatformGuard("windows")]
+        private static bool UsePacketIntercept(WebApplicationBuilder builder)
+        {
+            return OperatingSystem.IsWindows() &&
+                builder.Configuration.GetValue("FastGithub:EnablePacketIntercept", true);
         }
 
         /// <summary>
@@ -118,6 +128,23 @@ namespace FastGithub
         /// <param name="app"></param>
         public static void ConfigureApp(this WebApplication app)
         {
+            // 界面统计使用独立的回环监听地址，避免与 IIS、PAC 或代理模式相互影响。
+            var uiPort = app.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<AppOptions>>().Value.UiPort;
+            app.Use(async (context, next) =>
+            {
+                if (uiPort <= 0 || context.Connection.LocalPort != uiPort)
+                {
+                    await next(context);
+                    return;
+                }
+                if (HttpMethods.IsGet(context.Request.Method) && context.Request.Path == "/flowStatistics")
+                {
+                    var statistics = context.RequestServices.GetRequiredService<IFlowAnalyzer>().GetFlowStatistics();
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(statistics, FlowStatisticsContext.Default.FlowStatistics));
+                }
+                else context.Response.StatusCode = StatusCodes.Status404NotFound;
+            });
             app.UseHttpProxyPac();
             app.UseRequestLogging();
             app.UseHttpReverseProxy();

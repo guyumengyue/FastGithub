@@ -10,6 +10,11 @@ namespace FastGithub.Configuration
     public class FastGithubOptions
     {
         /// <summary>
+        /// Windows 下启用透明流量拦截；关闭后使用显式 HTTP 代理。
+        /// </summary>
+        public bool EnablePacketIntercept { get; set; } = true;
+
+        /// <summary>
         /// http代理端口
         /// </summary>
         public int HttpProxyPort { get; set; } = 38457;

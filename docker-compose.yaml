@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   fastgithub:
     image: slcnx/fastgithub
@@ -13,10 +12,10 @@ services:
     volumes:
     - cacert:/tmp/cacert
     - build_data:/build_data
+    - ./scripts/docker-sample.sh:/usr/local/bin/fastgithub-sample.sh:ro
     working_dir: /build_data
-    restart: on-failure
-    tty: true
-    entrypoint: sh -c 'cp /tmp/cacert/fastgithub.cer /usr/local/share/ca-certificates/fastgithub.crt && update-ca-certificates && git clone https://github.com/kubernetes/kubernetes.git'
+    restart: "on-failure:3"
+    entrypoint: ["sh", "/usr/local/bin/fastgithub-sample.sh"]
     command: ""
     environment:
       https_proxy: http://127.0.0.1:38457
@@ -25,7 +24,8 @@ services:
   build:
     working_dir: /build_data
     depends_on:
-    - sample
+      sample:
+        condition: service_completed_successfully
     image: nginx
     volumes:
     - build_data:/build_data

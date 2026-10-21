@@ -1,166 +1,107 @@
-﻿<Window x:Class="FastGithub.UI.MainWindow"
+<Window x:Class="FastGithub.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FastGithub.UI"
-        mc:Ignorable="d"
-        Title="FastGithub" Height="480" Width="640" WindowStartupLocation="CenterScreen">
-
-    <Window.Resources>
-        <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-            <Style x:Key="TabControlWithUnderLineStyle" TargetType="{x:Type TabControl}">
-                <Setter Property="Padding" Value="2"/>
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Background" Value="White"/>
-                <Setter Property="BorderBrush" Value="#FFACACAC"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TabControl}">
-                            <Grid x:Name="templateRoot" ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="ColumnDefinition0"/>
-                                    <ColumnDefinition x:Name="ColumnDefinition1" Width="0"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition x:Name="RowDefinition0" Height="Auto"/>
-                                    <RowDefinition x:Name="RowDefinition1" Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TabPanel x:Name="HeaderPanel" HorizontalAlignment="Center" Background="Transparent" Grid.Column="0" IsItemsHost="True" Margin="0" Grid.Row="0" KeyboardNavigation.TabIndex="1" Panel.ZIndex="1"/>
-                                <Line X1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource Self}}" Stroke="Gray" StrokeThickness="0.1" VerticalAlignment="Bottom" Margin="0 0 0 1" SnapsToDevicePixels="True"/>
-                                <Border x:Name="ContentPanel" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Grid.Column="0" KeyboardNavigation.DirectionalNavigation="Contained" Grid.Row="1" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
-                                    <ContentPresenter x:Name="PART_SelectedContentHost" ContentTemplate="{TemplateBinding SelectedContentTemplate}" Content="{TemplateBinding SelectedContent}" ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" ContentSource="SelectedContent" Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        Title="FastGithub" Width="980" Height="720" MinWidth="860" MinHeight="620"
+        FontFamily="Segoe UI, Microsoft YaHei UI" FontSize="14"
+        Background="{DynamicResource CanvasBrush}" WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+    <Window.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceDictionary Source="Theme.xaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Window.Resources>
+    <Grid Background="{DynamicResource CanvasBrush}">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="174"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <Border Background="{DynamicResource RailBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="0,0,1,0">
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Top" Margin="24,29,12,28">
+                    <TextBlock Text="FastGithub" FontSize="23" FontWeight="SemiBold"/>
+                    <TextBlock Text="GitHub 访问加速" Style="{StaticResource SecondaryText}" Margin="1,6,0,0"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <RadioButton x:Name="OverviewNav" GroupName="Navigation" IsChecked="True" Tag="Overview" Style="{StaticResource NavButton}" Checked="Navigate" AutomationProperties.Name="概览">
+                        <StackPanel Orientation="Horizontal"><Path Style="{StaticResource NavIcon}" Data="M1,1 H7 V7 H1 Z M11,1 H17 V7 H11 Z M1,11 H7 V17 H1 Z M11,11 H17 V17 H11 Z"/><TextBlock Text="概览" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/></StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Navigation" Tag="Logs" Style="{StaticResource NavButton}" Checked="Navigate" AutomationProperties.Name="运行日志">
+                        <StackPanel Orientation="Horizontal"><Path Style="{StaticResource NavIcon}" Data="M3,1 H15 V17 H3 Z M6,5 H12 M6,9 H12 M6,13 H10"/><TextBlock Text="运行日志" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/></StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Navigation" Tag="Settings" Style="{StaticResource NavButton}" Checked="Navigate" AutomationProperties.Name="连接设置">
+                        <StackPanel Orientation="Horizontal"><Path Style="{StaticResource NavIcon}" Data="M1,4 H17 M1,9 H17 M1,14 H17 M5,1 V7 M12,6 V12 M7,11 V17"/><TextBlock Text="连接设置" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/></StackPanel>
+                    </RadioButton>
+                    <RadioButton GroupName="Navigation" Tag="Help" Style="{StaticResource NavButton}" Checked="Navigate" AutomationProperties.Name="使用帮助">
+                        <StackPanel Orientation="Horizontal"><Path Style="{StaticResource NavIcon}" Data="M9,1 A8,8 0 1 1 8.99,1 M6,6 C6,2 14,4 11,8 L9,10 V11 M9,14 V15"/><TextBlock Text="使用帮助" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/></StackPanel>
+                    </RadioButton>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Bottom" Margin="24,0,18,23">
+                    <TextBlock x:Name="VersionText" Style="{StaticResource SecondaryText}"/>
+                    <TextBlock Text="关闭窗口后继续运行&#10;可从托盘完全退出" FontSize="11" Foreground="{DynamicResource MutedBrush}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        <Grid Grid.Column="1" Margin="28,24,28,18">
+            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+            <Grid Margin="0,0,0,22">
+                <StackPanel><TextBlock x:Name="PageTitle" Text="概览" FontSize="26" FontWeight="SemiBold"/><TextBlock x:Name="PageSubtitle" Text="查看本地服务状态和实时流量" Style="{StaticResource SecondaryText}" Margin="0,6,0,0"/></StackPanel>
+                <Button Content="打开 GitHub" HorizontalAlignment="Right" VerticalAlignment="Center" Click="OpenGithub"/>
+            </Grid>
+            <Border Grid.Row="1" Background="{DynamicResource PanelBrush}" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1" CornerRadius="12" Padding="22,20" Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel Margin="0,0,18,0" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse x:Name="StateDot" Width="9" Height="9" Fill="#79869A" Margin="0,0,10,0"/>
+                            <TextBlock x:Name="StateText" Text="已停止" FontSize="21" FontWeight="SemiBold"/>
+                            <Border Background="{DynamicResource AccentSoftBrush}" CornerRadius="4" Padding="8,3" Margin="12,1,0,0" VerticalAlignment="Center"><TextBlock x:Name="ModeText" Text="透明模式" FontSize="11" Foreground="{DynamicResource AccentBrush}"/></Border>
+                        </StackPanel>
+                        <TextBlock x:Name="StateHint" Text="启动服务后，流量数据将在下方显示。" Style="{StaticResource SecondaryText}" Margin="19,8,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="ToggleButton" Grid.Column="1" Content="启动服务" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center" Click="ToggleService" MinWidth="112" AutomationProperties.Name="启动或停止 FastGithub 服务"/>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2">
+                <Grid x:Name="OverviewPage">
+                    <Grid.RowDefinitions><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                    <Border Background="{DynamicResource PanelBrush}" CornerRadius="12" Padding="22">
+                        <local:FlowChart x:Name="TrafficChart"/>
+                    </Border>
+                    <Grid Grid.Row="1" Margin="0,16,0,0">
+                        <TextBlock Text="只统计经过 FastGithub 的流量" Style="{StaticResource SecondaryText}"/>
+                        <Button Content="打开日志文件夹" Click="OpenLogsFolder" HorizontalAlignment="Right" Padding="10,4" MinHeight="28"/>
+                    </Grid>
+                </Grid>
+                <Border x:Name="LogsPage" Visibility="Collapsed" Background="{DynamicResource PanelBrush}" CornerRadius="12" Padding="18">
+                    <local:UdpLogListBox x:Name="LogView"/>
+                </Border>
+                <ScrollViewer x:Name="SettingsPage" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Border Background="{DynamicResource PanelBrush}" CornerRadius="12" Padding="22">
+                            <StackPanel>
+                                <TextBlock Text="连接模式" Style="{StaticResource Heading}"/>
+                                <TextBlock Text="先停止服务，再切换模式。设置会在下次启动时生效。" Style="{StaticResource SecondaryText}" Margin="0,7,0,17"/>
+                                <StackPanel x:Name="ModeOptions">
+                                    <RadioButton x:Name="TransparentMode" GroupName="Mode" Content="透明模式" FontWeight="SemiBold" Margin="0,0,0,7" Checked="SettingsChanged"/>
+                                    <TextBlock Text="自动接管匹配域名的流量，支持 HTTP、HTTPS、SSH 和 Git 协议。" Style="{StaticResource SecondaryText}" Margin="20,0,0,18"/>
+                                    <RadioButton x:Name="ExplicitMode" GroupName="Mode" Content="显式代理模式" FontWeight="SemiBold" Margin="0,0,0,7" Checked="SettingsChanged"/>
+                                    <TextBlock Text="与 IIS 或其他本地服务冲突时使用，需要在浏览器或 Git 中设置代理。" Style="{StaticResource SecondaryText}" Margin="20,0,0,16"/>
+                                </StackPanel>
+                                <Border Background="{DynamicResource CanvasBrush}" Padding="12" CornerRadius="6">
+                                    <Grid><TextBlock x:Name="ProxyAddress" FontFamily="Consolas" VerticalAlignment="Center"/><Button Content="复制地址" HorizontalAlignment="Right" Click="CopyProxyAddress" Padding="10,4" MinHeight="28"/></Grid>
                                 </Border>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="TabStripPlacement" Value="Bottom">
-                                    <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="1"/>
-                                    <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                    <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                    <Setter Property="Height" TargetName="RowDefinition1" Value="Auto"/>
-                                </Trigger>
-                                <Trigger Property="TabStripPlacement" Value="Left">
-                                    <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-                                    <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                    <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="0"/>
-                                    <Setter Property="Grid.Column" TargetName="ContentPanel" Value="1"/>
-                                    <Setter Property="Width" TargetName="ColumnDefinition0" Value="Auto"/>
-                                    <Setter Property="Width" TargetName="ColumnDefinition1" Value="*"/>
-                                    <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                    <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                                </Trigger>
-                                <Trigger Property="TabStripPlacement" Value="Right">
-                                    <Setter Property="Grid.Row" TargetName="HeaderPanel" Value="0"/>
-                                    <Setter Property="Grid.Row" TargetName="ContentPanel" Value="0"/>
-                                    <Setter Property="Grid.Column" TargetName="HeaderPanel" Value="1"/>
-                                    <Setter Property="Grid.Column" TargetName="ContentPanel" Value="0"/>
-                                    <Setter Property="Width" TargetName="ColumnDefinition0" Value="*"/>
-                                    <Setter Property="Width" TargetName="ColumnDefinition1" Value="Auto"/>
-                                    <Setter Property="Height" TargetName="RowDefinition0" Value="*"/>
-                                    <Setter Property="Height" TargetName="RowDefinition1" Value="0"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="TabItemExWithUnderLineStyle"  TargetType="{x:Type TabItem}">
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="#FFACACAC"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type TabItem}">
-                            <Grid x:Name="templateRoot"  SnapsToDevicePixels="True" Background="Transparent">
-                                <Border x:Name="_underline" BorderBrush="#37aefe" BorderThickness="0" Margin="{TemplateBinding Margin}"/>
-                                <Grid>
-                                    <TextBlock x:Name="txt" Visibility="Visible" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{TemplateBinding Header}" ToolTip="{TemplateBinding Header}" Foreground="{TemplateBinding Foreground}" TextTrimming="CharacterEllipsis" />
-                                </Grid>
-                            </Grid>
-                            <ControlTemplate.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Top"/>
-                                    </MultiDataTrigger.Conditions>
-
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    <Setter Property="Foreground" TargetName="txt" Value="#37aefe"/>
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Left"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Opacity" TargetName="templateRoot" Value="0.56"/>
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Bottom"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Opacity" TargetName="templateRoot" Value="0.56"/>
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Right"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Opacity" TargetName="templateRoot" Value="0.56"/>
-                                </MultiDataTrigger>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Top"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Opacity" TargetName="templateRoot" Value="0.56"/>
-                                </MultiDataTrigger>
-
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                        <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}}" Value="Top"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                                    <Setter Property="Panel.ZIndex" Value="1"/>
-                                    <Setter Property="Foreground" TargetName="txt" Value="#37aefe"/>
-                                    <Setter Property="BorderThickness" TargetName="_underline" Value="0 0 0 2"/>
-                                </MultiDataTrigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
-    <Grid Background="#00ffffff">
-        <TabControl Style="{StaticResource TabControlWithUnderLineStyle}" Foreground="Black" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-            <TabItem Style="{StaticResource TabItemExWithUnderLineStyle}" Header="流量" Height="40" Width="60"  Margin="5 0" FontSize="18">
-                <Grid Background="#f7f7f7">
-                    <local:FlowChart Margin="16" />
-                </Grid>
-            </TabItem>
-
-            <TabItem Style="{StaticResource TabItemExWithUnderLineStyle}" Header="日志" Height="40" Width="60" Margin="5 0" FontSize="18">
-                <Grid Background="#f7f7f7">
-                    <local:UdpLogListBox/>
-                </Grid>
-            </TabItem>
-
-            <TabItem Style="{StaticResource TabItemExWithUnderLineStyle}" Header="问答" Height="40" Width="60" Margin="5 0" FontSize="18">
-                <Grid Background="#f7f7f7">
-                    <local:IssuesWebbrowser/>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{DynamicResource PanelBrush}" CornerRadius="12" Padding="22" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Text="启动行为" Style="{StaticResource Heading}" Margin="0,0,0,15"/>
+                                <CheckBox x:Name="AutoStart" Content="打开界面时自动启动服务" Checked="SettingsChanged" Unchecked="SettingsChanged"/>
+                                <TextBlock Text="此设置不会添加 Windows 开机自启任务。" Style="{StaticResource SecondaryText}" Margin="20,8,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                            <Button Content="打开配置文件夹" Click="OpenConfigurationFolder"/>
+                            <Button Content="打开证书文件夹" Click="OpenCertificatesFolder" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+                <Border x:Name="HelpPage" Visibility="Collapsed" Background="{DynamicResource PanelBrush}" CornerRadius="12" Padding="22"><local:IssuesWebbrowser/></Border>
+            </Grid>
+            <TextBlock x:Name="Feedback" Grid.Row="3" Text="本地服务状态不代表 GitHub 当前可达" Style="{StaticResource SecondaryText}" FontSize="11" Margin="0,14,0,0"/>
+        </Grid>
     </Grid>
 </Window>

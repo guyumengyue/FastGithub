@@ -56,7 +56,7 @@ namespace FastGithub.Http
             request.SetRequestContext(new RequestContext(isHttps, tlsSniValue));
 
             // 设置请求头host，修改协议为http
-            request.Headers.Host = uri.Host;
+            request.Headers.Host = uri.Authority;
             request.RequestUri = new UriBuilder(uri) { Scheme = Uri.UriSchemeHttp }.Uri;
 
             if (this.domainConfig.Timeout != null)
@@ -128,7 +128,15 @@ namespace FastGithub.Http
         private async ValueTask<Stream> ConnectAsync(SocketsHttpConnectionContext context, IPEndPoint ipEndPoint, CancellationToken cancellationToken)
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            await socket.ConnectAsync(ipEndPoint, cancellationToken);
+            try
+            {
+                await socket.ConnectAsync(ipEndPoint, cancellationToken);
+            }
+            catch
+            {
+                socket.Dispose();
+                throw;
+            }
             var stream = new NetworkStream(socket, ownsSocket: true);
 
             var requestContext = context.InitialRequestMessage.GetRequestContext();
@@ -139,17 +147,30 @@ namespace FastGithub.Http
 
             var tlsSniValue = requestContext.TlsSniValue.WithIPAddress(ipEndPoint.Address);
             var sslStream = new SslStream(stream, leaveInnerStreamOpen: false);
-            await sslStream.AuthenticateAsClientAsync(new SslClientAuthenticationOptions
+            try
             {
-                TargetHost = tlsSniValue.Value,
-                RemoteCertificateValidationCallback = ValidateServerCertificate
-            }, cancellationToken);
+                await sslStream.AuthenticateAsClientAsync(new SslClientAuthenticationOptions
+                {
+                    TargetHost = tlsSniValue.Value,
+                    RemoteCertificateValidationCallback = ValidateServerCertificate
+                }, cancellationToken);
+            }
+            catch
+            {
+                await sslStream.DisposeAsync();
+                throw;
+            }
 
             return sslStream;
 
             // 验证证书有效性
             bool ValidateServerCertificate(object sender, X509Certificate? cert, X509Chain? chain, SslPolicyErrors errors)
             {
+                // 自定义 SNI 只允许放宽名称匹配，不能忽略不受信任或过期的证书链。
+                if ((errors & ~SslPolicyErrors.RemoteCertificateNameMismatch) != SslPolicyErrors.None)
+                {
+                    return false;
+                }
                 if (errors.HasFlag(SslPolicyErrors.RemoteCertificateNameMismatch))
                 {
                     if (this.domainConfig.TlsIgnoreNameMismatch == true)

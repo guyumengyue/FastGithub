@@ -17,7 +17,9 @@ namespace FastGithub.UI
 
         public string SourceContext { get; set; } = string.Empty;
 
-        public string Color => this.Level <= LogLevel.Information ? "#333" : "IndianRed";
+        public string Color => this.Level >= LogLevel.Error ? "#B43D35" : this.Level == LogLevel.Warning ? "#8A6500" : "#5D6B80";
+
+        public string LevelName => this.Level >= LogLevel.Error ? "错误" : this.Level == LogLevel.Warning ? "警告" : this.Level == LogLevel.Information ? "信息" : "调试";
 
         /// <summary>
         /// 复制到剪贴板
