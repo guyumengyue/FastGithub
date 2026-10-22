@@ -14,6 +14,7 @@ GitHub 上的 [guyumengyue/FastGithub](https://github.com/guyumengyue/FastGithub
 - 调整 Windows/macOS 构建和发布流程，增加 Apple Silicon ARM64 支持。
 - 修复代理连接失败时的资源释放、自定义端口 Host 保留和上游 TLS 证书校验问题；移除启动时修改 Git 全局证书校验设置的行为。
 - 完善 Windows 桌面界面，加入状态与流量概览、启停控制、日志筛选导出、连接设置和本地帮助。
+- 增加 Hugging Face Hub、模型文件 Xet/CDN、Inference Router 与 Spaces 的 HTTPS 域名规则，保留原始主机名 SNI。
 - 增加回归测试、界面预览脚本及项目原理、Issue 对应关系和验证范围说明。
 
 修改详情、相关 Issue 和仍未解决的问题见[项目分析与修复说明](docs/项目分析与修复说明.md)。
